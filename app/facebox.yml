@@ -15,20 +15,28 @@ spec:
       labels:
         app: emojify-facebox
       annotations:
-        "consul.hashicorp.com/connect-inject": "true"
     spec:
       containers:
       - name: emojify-facebox
         image: "nicholasjackson/emojify-facedetection:v0.10.0"
         ports:
-        - containerPort: 8080
+        - containerPort: 8000
         env:
-        - name: MB_KEY
-          valueFrom:
-            secretKeyRef:
-              name: emojify
-              key: mb_key
-        - name: MB_ADDRESS
-          value: "0.0.0.0"
-        - name: MB_PORT
-          value: "8080"
+        - name: MIN_NEIGHBORS
+          value: "14"
+        - name: SCALE_FACTOR
+          value: "1.03"
+        - name: STATSD_ADDRESS
+          value: localhost:9125
+
+      - name: prometheus-statsd
+        image: "prom/statsd-exporter:latest"
+        ports:
+          - name: metrics
+            containerPort: 9102
+        resources:
+          limits:
+            memory: 100Mi
+          requests:
+            cpu: 100m
+            memory: 100Mi

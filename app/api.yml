@@ -15,7 +15,6 @@ spec:
       labels:
         app: emojify-api
       annotations:
-        "consul.hashicorp.com/connect-inject": "true"
         "consul.hashicorp.com/connect-service-upstreams": "emojify-facebox:8000,emojify-cache:8001"
     spec:
       containers:
@@ -23,16 +22,21 @@ spec:
         image: "nicholasjackson/emojify-api:v0.9.8"
         imagePullPolicy: Always
         command: ["/service/emojify-api"]
-        args: [
-          "-allow-origin=*",
-          "-authn-disable=true",
-          "-bind-address=0.0.0.0:9090",
-          "-cache-address=localhost:8001",
-          "-facebox-address=localhost:8000",
-          "-path=/",
-        ]
         ports:
         - containerPort: 9090
+        env:
+          - name: AUTHN_DISABLE
+            value: "true"
+          - name: CACHE_ADDRESS
+            value: localhost:8001
+          - name: CACHE_ERROR_RATE
+            value: "0.5"
+          - name: FACEBOX_ADDRESS
+            value: localhost:8000
+          - name: LOG_FILE
+            value: /var/log/emojify.log
+          - name: STATSD_ADDRESS
+            value: localhost:9125
         livenessProbe:
           httpGet:
             path: /health
@@ -42,6 +46,18 @@ spec:
         resources:
           limits:
             cpu: 300m
+          requests:
+            cpu: 100m
+            memory: 100Mi
+
+      - name: prometheus-statsd
+        image: "prom/statsd-exporter:latest"
+        ports:
+          - name: metrics
+            containerPort: 9102
+        resources:
+          limits:
+            memory: 100Mi
           requests:
             cpu: 100m
             memory: 100Mi

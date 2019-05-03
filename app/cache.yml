@@ -15,13 +15,29 @@ spec:
       labels:
         app: emojify-cache
       annotations:
-        "consul.hashicorp.com/connect-inject": "true"
+        "consul.hashicorp.com/connect-service-protocol": "grpc"
     spec:
       containers:
       - name: emojify-cache
         image: "nicholasjackson/emojify-cache:v0.4.3"
         ports:
-        - containerPort: 9090
+        - containerPort: 8001
         env:
         - name: BIND_ADDRESS
           value: "0.0.0.0"
+        - name: CACHE_MAX_LIFE
+          value: 30m
+        - name: STATSD_ADDRESS
+          value: localhost:9125
+
+      - name: prometheus-statsd
+        image: "prom/statsd-exporter:latest"
+        ports:
+          - name: metrics
+            containerPort: 9102
+        resources:
+          limits:
+            memory: 100Mi
+          requests:
+            cpu: 100m
+            memory: 100Mi

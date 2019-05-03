@@ -68,8 +68,7 @@ spec:
       labels:
         app: emojify-ingress
       annotations:
-        "consul.hashicorp.com/connect-inject": "true"
-        "consul.hashicorp.com/connect-service-upstreams": "emojify-website:8000,emojify-api:8001"
+        "consul.hashicorp.com/connect-service-upstreams": "emojify-website:80,emojify-api:9090"
     spec:
       volumes:
       - name: config
@@ -87,3 +86,15 @@ spec:
         volumeMounts:
         - name: config
           mountPath: /etc/nginx/
+
+      - name: prometheus-statsd
+        image: "prom/statsd-exporter:latest"
+        ports:
+          - name: metrics
+            containerPort: 9102
+        resources:
+          limits:
+            memory: 100Mi
+          requests:
+            cpu: 100m
+            memory: 100Mi

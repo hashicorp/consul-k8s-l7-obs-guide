@@ -32,8 +32,6 @@ spec:
     metadata:
       labels:
         app: emojify-website
-      annotations:
-        "consul.hashicorp.com/connect-inject": "true"
     spec:
       volumes:
       - name: config
@@ -52,3 +50,15 @@ spec:
         - name: config
           mountPath: /usr/share/nginx/html/config
           readOnly: true
+
+      - name: prometheus-statsd
+        image: "prom/statsd-exporter:latest"
+        ports:
+          - name: metrics
+            containerPort: 9102
+        resources:
+          limits:
+            memory: 100Mi
+          requests:
+            cpu: 100m
+            memory: 100Mi
