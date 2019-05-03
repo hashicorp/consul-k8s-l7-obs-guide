@@ -1,0 +1,47 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: emojify-api
+  labels:
+    app: emojify-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: emojify-api
+  template:
+    metadata:
+      labels:
+        app: emojify-api
+      annotations:
+        "consul.hashicorp.com/connect-inject": "true"
+        "consul.hashicorp.com/connect-service-upstreams": "emojify-facebox:8000,emojify-cache:8001"
+    spec:
+      containers:
+      - name: emojify-api
+        image: "nicholasjackson/emojify-api:v0.9.8"
+        imagePullPolicy: Always
+        command: ["/service/emojify-api"]
+        args: [
+          "-allow-origin=*",
+          "-authn-disable=true",
+          "-bind-address=0.0.0.0:9090",
+          "-cache-address=localhost:8001",
+          "-facebox-address=localhost:8000",
+          "-path=/",
+        ]
+        ports:
+        - containerPort: 9090
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 9090
+          initialDelaySeconds: 10
+          periodSeconds: 30
+        resources:
+          limits:
+            cpu: 300m
+          requests:
+            cpu: 100m
+            memory: 100Mi
