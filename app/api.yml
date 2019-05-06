@@ -15,7 +15,7 @@ spec:
       labels:
         app: emojify-api
       annotations:
-        "consul.hashicorp.com/connect-service-upstreams": "emojify-facebox:8000,emojify-cache:8001"
+        "consul.hashicorp.com/connect-service-upstreams": "emojify-facebox:8003,emojify-cache:8005"
     spec:
       containers:
       - name: emojify-api
@@ -28,15 +28,17 @@ spec:
           - name: AUTHN_DISABLE
             value: "true"
           - name: CACHE_ADDRESS
-            value: localhost:8001
+            value: localhost:8005
           - name: CACHE_ERROR_RATE
             value: "0.5"
           - name: FACEBOX_ADDRESS
-            value: localhost:8000
+            value: localhost:8003
           - name: LOG_FILE
             value: /var/log/emojify.log
           - name: STATSD_ADDRESS
             value: localhost:9125
+          - name: BIND_ADDRESS
+            value: "0.0.0.0:9090"
         livenessProbe:
           httpGet:
             path: /health

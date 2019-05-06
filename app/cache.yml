@@ -21,7 +21,7 @@ spec:
       - name: emojify-cache
         image: "nicholasjackson/emojify-cache:v0.4.3"
         ports:
-        - containerPort: 8001
+        - containerPort: 9090
         env:
         - name: BIND_ADDRESS
           value: "0.0.0.0"

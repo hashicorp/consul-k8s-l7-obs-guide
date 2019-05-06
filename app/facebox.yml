@@ -20,7 +20,7 @@ spec:
       - name: emojify-facebox
         image: "nicholasjackson/emojify-facedetection:v0.10.0"
         ports:
-        - containerPort: 8000
+        - containerPort: 9090
         env:
         - name: MIN_NEIGHBORS
           value: "14"

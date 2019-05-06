@@ -68,7 +68,7 @@ spec:
       labels:
         app: emojify-ingress
       annotations:
-        "consul.hashicorp.com/connect-service-upstreams": "emojify-website:80,emojify-api:9090"
+        "consul.hashicorp.com/connect-service-upstreams": "emojify-website:8000,emojify-api:8001"
     spec:
       volumes:
       - name: config
@@ -83,6 +83,7 @@ spec:
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 80
+
         volumeMounts:
         - name: config
           mountPath: /etc/nginx/
