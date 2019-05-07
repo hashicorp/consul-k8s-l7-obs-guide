@@ -9,6 +9,7 @@ global:
 server:
   replicas: 1
   bootstrapExpect: 1
+  affinity:
   disruptionBudget:
     enabled: true
     maxUnavailable: 0
