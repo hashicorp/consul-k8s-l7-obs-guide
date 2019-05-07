@@ -1,0 +1,7 @@
+server:
+  global:
+    scrape_interval: 10s
+extraScrapeConfigs: |
+  - job_name: 'sample-job'
+    kubernetes_sd_configs:
+      - role: pod
