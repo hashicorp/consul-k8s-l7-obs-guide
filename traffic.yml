@@ -26,4 +26,4 @@ spec:
         - name: SHOW_PROGRESS
           value: "false"
         - name: USERS
-          value: "2"
+          value: "3"
