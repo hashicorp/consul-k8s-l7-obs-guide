@@ -6,7 +6,7 @@ metadata:
   labels:
     app: emojify-traffic
 spec:
-  replicas: 5
+  replicas: 1
   selector:
     matchLabels:
       app: emojify-traffic
@@ -22,7 +22,7 @@ spec:
         - name: BASE_URI
           value: http://ingress
         - name: DURATION
-          value: "24h"
+          value: "1m"
         - name: SHOW_PROGRESS
           value: "false"
         - name: USERS
