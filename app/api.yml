@@ -15,6 +15,7 @@ spec:
       labels:
         app: emojify-api
       annotations:
+        "consul.hashicorp.com/connect-inject": "true"
         "consul.hashicorp.com/connect-service-upstreams": "emojify-facebox:8003,emojify-cache:8005"
     spec:
       containers:

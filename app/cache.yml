@@ -15,6 +15,7 @@ spec:
       labels:
         app: emojify-cache
       annotations:
+        "consul.hashicorp.com/connect-inject": "true"
         "consul.hashicorp.com/connect-service-protocol": "grpc"
     spec:
       containers:

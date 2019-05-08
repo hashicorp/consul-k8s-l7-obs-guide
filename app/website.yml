@@ -23,6 +23,8 @@ metadata:
   name: emojify-website
   labels:
     app: emojify-website
+  annotations:
+    "consul.hashicorp.com/connect-inject": "true"
 spec:
   replicas: 1
   selector:

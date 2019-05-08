@@ -68,6 +68,7 @@ spec:
       labels:
         app: emojify-ingress
       annotations:
+        "consul.hashicorp.com/connect-inject": "true"
         "consul.hashicorp.com/connect-service-upstreams": "emojify-website:8000,emojify-api:8001"
     spec:
       volumes:
