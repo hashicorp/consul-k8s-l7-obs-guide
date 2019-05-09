@@ -1,12 +1,9 @@
-# Available parameters and their default values for the Consul chart.
-
+# name your datacenter
 global:
   datacenter: dc1
-  image: "judithpatudith/consul-dev:metrics"
-  imageK8S: "judithpatudith/consul-dev:k8s-metrics"
-  pullPolicy: Never
 
 server:
+  # use 1 server
   replicas: 1
   bootstrapExpect: 1
   disruptionBudget:
@@ -15,6 +12,7 @@ server:
 
 client:
   enabled: true
+  # enable grpc on your client to support consul consul connect
   grpc: true
 
 ui:
@@ -22,10 +20,14 @@ ui:
 
 connectInject:
   enabled: true
+  # inject an envoy sidecar into every new pod, except for those with annotations that prevent injection
   default: true
+  # these settings enable L7 metrics collection and are new in 1.5
   centralConfig:
     enabled: true
+    # set the default protocol (cab be overwritten with annotations)
     defaultProtocol: "http"
+    # tell envoy where  to send metrics
     proxyDefaults: |
       {
       "envoy_dogstatsd_url": "udp://127.0.0.1:9125"
