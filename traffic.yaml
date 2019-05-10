@@ -20,7 +20,7 @@ spec:
         image: nicholasjackson/emojify-traffic:v0.2.1
         env:
         - name: BASE_URI
-          value: http://ingress
+          value: http://emojify-ingress
         - name: DURATION
           value: "24h"
         - name: SHOW_PROGRESS
